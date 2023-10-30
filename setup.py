@@ -34,8 +34,8 @@ urls = []
 encryption_mode="none" # Options: "none","self","certbot","skip"
 ddns_temp_config=pathlib.Path('/tmp/ddclient.conf')
 ddns_real_config=pathlib.Path('/var/snap/ddclient-snap/current/etc/ddclient/ddclient.conf')
-rwsols_config_sample = script_dir.joinpath('www/html/wol/config_sample.php')
-rwsols_config_user = script_dir.joinpath('www/html/wol/config.php')
+rwsols_config_sample = script_dir.joinpath('www/html/config_sample.php')
+rwsols_config_user = script_dir.joinpath('www/html/config.php')
 
 # Colors
 black = lambda text: '\033[0;30m' + text + '\033[0m'
