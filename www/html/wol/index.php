@@ -201,7 +201,7 @@ else
                 elseif ($wake_up)
                 {
                 	echo "<p>Approved. Sending WOL Command...</p>";
-					exec ('wakeonlan ' . $COMPUTER_MAC[$selectedComputer]);
+					exec ('wakeonlan ' -i 192.168.111.255 . $COMPUTER_MAC[$selectedComputer]);
 					echo "<p>Command Sent. Waiting for " . $COMPUTER_NAME[$selectedComputer] . " to wake up...</p><p>";
 					$count = 1;
 					$down = true;

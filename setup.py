@@ -34,8 +34,8 @@ urls = []
 encryption_mode="none" # Options: "none","self","certbot","skip"
 ddns_temp_config=pathlib.Path('/tmp/ddclient.conf')
 ddns_real_config=pathlib.Path('/var/snap/ddclient-snap/current/etc/ddclient/ddclient.conf')
-rwsols_config_sample = script_dir.joinpath('www/html/config_sample.php')
-rwsols_config_user = script_dir.joinpath('www/html/config.php')
+rwsols_config_sample = script_dir.joinpath('www/html/wol/config_sample.php')
+rwsols_config_user = script_dir.joinpath('www/html/wol/config.php')
 
 # Colors
 black = lambda text: '\033[0;30m' + text + '\033[0m'
@@ -134,12 +134,12 @@ def run_step(handle, description, dot_file_skippable=True):
 def _01_install_prereqs():
     try:
         subprocess.run(['sudo', 'apt-get', 'update'], check=True)
-        subprocess.run(['sudo', 'apt-get', '-y', 'install', 'wakeonlan', 'git', 'apache2', 'php7.4', 'php7.4-curl', 'libapache2-mod-php7.4', 'snapd'], check=True)
+        subprocess.run(['sudo', 'apt-get', '-y', 'install', 'wakeonlan', 'git', 'apache2', 'php7.4', 'php7.4-curl', 'libapache2-mod-php7.4', 'snapd','python3-certbot-apache'], check=True)
         subprocess.run(['sudo', 'snap', 'install', 'core'], check=True)
         subprocess.run(['sudo', 'snap', 'refresh', 'core'], check=True)
-        subprocess.run(['sudo', 'apt-get', '-y', 'remove', 'certbot']) #Remove any existing installations from package managers
-        subprocess.run(['sudo', 'snap', 'install', '--classic', 'certbot'], check=True)
-        subprocess.run(['sudo', 'ln', '-sf', '/snap/bin/certbot', '/usr/bin/certbot'], check=True)
+        #subprocess.run(['sudo', 'apt-get', '-y', 'remove', 'certbot']) #Remove any existing installations from package managers
+        #subprocess.run(['sudo', 'snap', 'install', '--classic', 'certbot'], check=True)
+        #subprocess.run(['sudo', 'ln', '-sf', '/snap/bin/certbot', '/usr/bin/certbot'], check=True)
     except subprocess.CalledProcessError as e:
         print(yellow("Error installing prerequisite software."))
         return False
@@ -162,6 +162,7 @@ def _03_symlink_webroot():
         if apache_www_dir.exists():            
             # If there is a directory here that isn't symlinked, we back it up.
             if not apache_www_dir.is_symlink():
+                #subprocess.run(['sudo', 'cp', str(wol_www_dir), str(apache_www_dir) ], check=True)
                 subprocess.run(['sudo', 'mv', str(apache_www_dir), str(apache_www_dir) + "_backup"], check=True)
         subprocess.run(['sudo', 'ln', '-sf', str(wol_www_dir), str(apache_www_dir)], check=True)
     except Exception as e:
